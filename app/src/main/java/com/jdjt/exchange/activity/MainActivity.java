@@ -1,5 +1,6 @@
 package com.jdjt.exchange.activity;
 
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -114,6 +115,7 @@ public class MainActivity extends BaseActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this,SearchActivity.class));
             return true;
         }
 

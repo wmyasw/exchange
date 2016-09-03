@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:fitsSystemWindows="true"
+              android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="20dp"
+            android:background="@color/colorPrimary"
+            android:visibility="visible">
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_find"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--搜索按钮 （用于拉伸 收缩）-->
+            <LinearLayout
+                android:id="@+id/ll_btn_view"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="2dp"
+                android:background="@drawable/selector_btn_shape1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/btn_user"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:background="@drawable/main_btn_shape_white"
+                    android:gravity="center"
+                    android:text="搜索"
+                    />
+            </LinearLayout>
+
+            <!--搜索栏-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_margin="10dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/main_ll_fillet_white"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+
+                    <SearchView
+                        android:id="@+id/searchView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:submitBackground="@drawable/selector_btn_shape2"
+                        android:layout_weight="1"
+                        android:background="@drawable/main_ll_fillet_white"
+                        android:iconifiedByDefault="false"
+                        android:divider="@null"
+                        android:gravity="center"
+                        android:queryHint="请输入您要查找的内容"
+                        android:goIcon="@drawable/selector_btn_shape2"
+                        android:imeOptions="actionSearch"
+                        android:inputType="textCapWords"/>
+                    <!--<EditText-->
+                    <!--android:id="@+id/editText"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@drawable/main_ll_fillet_white"-->
+                    <!--android:ems="10"-->
+                    <!--android:gravity="center"-->
+                    <!--android:hint="请输入酒店/目的地关键字"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:inputType="textMultiLine"-->
+                    <!--android:paddingLeft="40dp"-->
+                    <!--android:paddingRight="40dp"-->
+                    <!--/>-->
+
+                    <!--<TextView-->
+                    <!--android:id="@+id/imageView3"-->
+                    <!--android:layout_width="41dp"-->
+                    <!--android:layout_height="41dp"-->
+                    <!--android:background="@drawable/selector_btn_shape2"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="GO"-->
+                    />
+                </LinearLayout>
+
+                <!--<ImageView-->
+                <!--android:id="@+id/imageView2"-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="40dp"-->
+
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:background="@drawable/selector_btn_shape2"-->
+                <!--android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"/>-->
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>
