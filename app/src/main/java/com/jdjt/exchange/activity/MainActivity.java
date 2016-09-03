@@ -27,7 +27,7 @@ public class MainActivity extends BaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button fab = (Button) findViewById(R.id.btn_user);
+        LinearLayout fab = (LinearLayout) findViewById(R.id.ll_btn_view);
         ll_bottom_content= (LinearLayout) findViewById(R.id.ll_bottom_content);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

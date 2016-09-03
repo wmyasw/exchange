@@ -45,17 +45,11 @@ public class BottomPopupWindow extends PopupWindow {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		menuView = inflater.inflate(R.layout.pop_bottom_user_info, null);// 填充view
-//		mMenuView.findViewById(R.id.parents).setPadding(0, 0, 0,0);
-//		补间动画
-//
-//
 		DisplayMetrics dm = new DisplayMetrics();
 		((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
 
-		int screenWidth =dm.widthPixels;
 		int screenHeight =  dm.heightPixels;
-		LinearLayout ll_bottom_content= (LinearLayout) menuView.findViewById(R.id.ll_bottom_content);
-
+//		LinearLayout ll_bottom_content= (LinearLayout) menuView.findViewById(R.id.ll_bottom_content);
 //		ll_bottom_content.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,screenHeight/2));
 		// 设置按钮监听
 		// 设置SelectPicPopupWindow的View
@@ -73,23 +67,12 @@ public class BottomPopupWindow extends PopupWindow {
 		ColorDrawable dw = new ColorDrawable(0x00000000);
 		// 设置SelectPicPopupWindow弹出窗体的背景
 		this.setBackgroundDrawable(dw);
-		// mMenuView添加OnTouchListener监听判断获取触屏位置如果在选择框外面则销毁弹出框
-		menuView.setOnTouchListener(new View.OnTouchListener() {
-
-			public boolean onTouch(View v, MotionEvent event) {
-
-//				int height = menuView.findViewById(R.id.rl_bottom_view).getTop();
-//				int y = (int) event.getY();
-//				if (event.getAction() == MotionEvent.ACTION_UP) {
-//					if (y < height) {
-////						dismiss();
-//					}
-//				}
-				return true;
-			}
-		});
+		this.setFocusable(false);
+		this.setOutsideTouchable(true);
+		// 刷新状态
+		this.update();
 		//取消
-		Button cancle_btn = (Button)menuView.findViewById(R.id.btn_user);
+		LinearLayout cancle_btn = (LinearLayout)menuView.findViewById(R.id.ll_btn_view);
 //		menuView.setOnClickListener(null);
 		cancle_btn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -97,19 +80,5 @@ public class BottomPopupWindow extends PopupWindow {
 				dismiss();
 			}
 		});
-	}
-
-	@Override
-	public void dismiss() {
-//		if(context!=null&&menuView!=null) {
-//			RelativeLayout relative_Layout = (RelativeLayout) menuView.findViewById(R.id.rl_bottom_view);
-//			Animation translateAnimation = AnimationUtils.loadAnimation(context, R.anim.push_bottom_out);
-//			translateAnimation.setDuration(300);
-//			translateAnimation.setInterpolator(AnimationUtils
-//					.loadInterpolator(context,
-//							android.R.anim.decelerate_interpolator));
-//			relative_Layout.startAnimation(translateAnimation);
-//		}
-		super.dismiss();
 	}
 }
