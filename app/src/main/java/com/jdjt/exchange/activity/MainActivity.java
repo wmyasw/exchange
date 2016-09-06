@@ -1,6 +1,10 @@
 package com.jdjt.exchange.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -10,84 +14,77 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
+import com.android.pc.ioc.app.Ioc;
+import com.android.pc.util.Handler_System;
 import com.jdjt.exchange.R;
 import com.jdjt.exchange.view.BottomPopupWindow;
+import com.jdjt.exchange.view.IMGGallery;
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.view.ViewHelper;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-   private  TranslateAnimation animation_Translate;//  位移动画
-    private LinearLayout ll_bottom_content;// 底部菜单 内容容器
+    IMGGallery img_gallery;
+
+    FrameLayout frameLayout;
+    FrameLayout.LayoutParams garrlyParams;
+
+    @Override
+    protected int initPageLayoutID() {
+        return R.layout.activity_main;
+    }
+
     @Override
     protected void initPageView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        super.initPageView();
+        initToolbar();
+        img_gallery = (IMGGallery) findViewById(R.id.img_gallery);
+        frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
+        garrlyParams = (FrameLayout.LayoutParams) img_gallery.getLayoutParams();
 
-        LinearLayout fab = (LinearLayout) findViewById(R.id.ll_btn_view);
-        ll_bottom_content= (LinearLayout) findViewById(R.id.ll_bottom_content);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        img_gallery.setLayoutParams(garrlyParams);
+        ViewTreeObserver1();
+    }
+
+    private void ViewTreeObserver1() {
+        img_gallery.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                BottomPopupWindow
-                        resPop = new BottomPopupWindow(MainActivity.this);
-                resPop.showAtLocation(ll_bottom_content, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的
+            public void onGlobalLayout() {
+                Ioc.getIoc().getLogger().i("*******************" + rl_bottom_bar.getHeight());
 
+                garrlyParams.height =Handler_System.dip2px(22)+(screenHeight / 5 * 2 - rl_bottom_bar.getHeight());
             }
         });
+    }
+
+    /**
+     * 初始化标题栏
+     */
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    /**
-     * 位移动画从底部弹出一个view窗口
-     * @param view
-     */
-    private void TranslateView(final View view){
-        animation_Translate = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, 0,
-                Animation.RELATIVE_TO_PARENT, 0,
-                Animation.RELATIVE_TO_PARENT, -1,
-                Animation.RELATIVE_TO_PARENT,0);
-        animation_Translate.setDuration(2000);
-        animation_Translate.setInterpolator(AnimationUtils
-                .loadInterpolator(MainActivity.this,
-                        android.R.anim.accelerate_decelerate_interpolator));
-//        animation_Translate.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                view.setVisibility(View.VISIBLE);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
-        view.startAnimation(animation_Translate);
-    }
-    @Override
-    protected int initPageLayoutID() {
-        return R.layout.activity_main;
-    }
 
     @Override
     public void onBackPressed() {
@@ -115,7 +112,7 @@ public class MainActivity extends BaseActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this,SearchActivity.class));
+            startActivity(new Intent(this, SearchActivity.class));
             return true;
         }
 

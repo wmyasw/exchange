@@ -40,6 +40,9 @@ public class BottomPopupWindow extends PopupWindow {
 		this.context=context;
 		init();
 	}
+//	public void isShow(){
+//		this.isShowing();
+//	}
 
 	private void init(){
 		LayoutInflater inflater = (LayoutInflater) context
@@ -57,7 +60,7 @@ public class BottomPopupWindow extends PopupWindow {
 		// 设置SelectPicPopupWindow弹出窗体的宽
 		this.setWidth(LayoutParams.MATCH_PARENT);
 		// 设置SelectPicPopupWindow弹出窗体的高
-		this.setHeight(screenHeight/2);
+		this.setHeight(screenHeight/5*3);
 		// 设置SelectPicPopupWindow弹出窗体可点击
 		this.setFocusable(true);
 		// 设置SelectPicPopupWindow弹出窗体动画效果

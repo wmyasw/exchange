@@ -35,12 +35,16 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <!--从底部进入-->
     <style name="bottom_pop">
-        <item  name="android:windowEnterAnimation">@anim/push_bottom_in</item>        <!-- 指定显示的动画xml  -->
-    <item name="android:windowExitAnimation">@anim/push_bottom_out</item>       <!-- 指定消失的动画xml  -->
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in
+        </item>        <!-- 指定显示的动画xml  -->
+        <item name="android:windowExitAnimation">@anim/push_bottom_out
+        </item>       <!-- 指定消失的动画xml  -->
     </style>
     <!--从顶部进入-->
     <style name="top_pop">
-        <item  name="android:windowEnterAnimation">@anim/push_top_in</item>        <!-- 指定显示的动画xml  -->
-        <item name="android:windowExitAnimation">@anim/push_top_out</item>       <!-- 指定消失的动画xml  -->
+        <item name="android:windowEnterAnimation">@anim/push_top_in
+        </item>        <!-- 指定显示的动画xml  -->
+        <item name="android:windowExitAnimation">@anim/push_top_out
+        </item>       <!-- 指定消失的动画xml  -->
     </style>
 </resources>

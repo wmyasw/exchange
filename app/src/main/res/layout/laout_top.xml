@@ -7,13 +7,13 @@
 
 
     <RelativeLayout
-        android:id="@+id/rl_bottom_view"
+        android:id="@+id/rl_top_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
         <LinearLayout
-            android:id="@+id/ll_bottom_content"
+            android:id="@+id/ll_top_content"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:background="@color/colorPrimary"
@@ -25,13 +25,13 @@
 
         <LinearLayout
             android:id="@+id/ll_search_view"
-            android:layout_width="62dp"
-            android:layout_height="62dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginTop="-56dp"
             android:layout_marginRight="2dp"
             android:background="@drawable/selector_btn_shape1"
             android:gravity="center"
-            android:layout_below="@+id/ll_bottom_content"
+            android:layout_below="@+id/ll_top_content"
             android:layout_alignParentEnd="true">
 
             <TextView

@@ -1,6 +1,7 @@
 package com.jdjt.exchange.common;
 
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -156,6 +157,7 @@ public class AppException extends Exception implements UncaughtExceptionHandler 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
 
+        Log.e("Exception","111111111111111111111111111");
         if (!handleException(ex) && mDefaultHandler != null) {
             mDefaultHandler.uncaughtException(thread, ex);
         }
@@ -174,13 +176,14 @@ public class AppException extends Exception implements UncaughtExceptionHandler 
         }
 
         System.out.println(ex.getMessage());
-
+        Log.e("Exception",ex.getMessage());
         StringBuffer exceptionStr = new StringBuffer();
         StackTraceElement[] elements = ex.getStackTrace();
         for (int i = 0; i < elements.length; i++) {
             exceptionStr.append(elements[i].toString() + "\n");
         }
-//		System.out.println(exceptionStr.toString());
+		System.out.println(exceptionStr.toString());
+        Log.e("Exception",exceptionStr.toString());
 
 //		final Context context = AppManager.getAppManager().currentActivity();
 //
