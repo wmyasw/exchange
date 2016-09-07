@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context="com.jdjt.exchange.activity.SearchActivity">
 
-    <include
-        layout="@layout/laout_top"/>
 
     <LinearLayout
         android:id="@+id/search_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></LinearLayout>
+        android:layout_height="match_parent">
+
+    </LinearLayout>
 
     <include layout="@layout/laout_footer"/>
+    <include layout="@layout/laout_top"/>
 </RelativeLayout>

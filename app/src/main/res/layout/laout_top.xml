@@ -1,49 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:id="@+id/layout_top"
-              android:orientation="vertical">
+<android.support.design.widget.CollapsingToolbarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_top"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+  tools:showIn="@layout/activity_search"
+    android:layoutMode="clipBounds"
+ >
 
-
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_top_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/ll_top_content"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@color/colorPrimary"
-            android:visibility="visible"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true">
+            android:orientation="vertical">
 
+            <!--搜索栏-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/main_ll_fillet_white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editText"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/main_ll_fillet_white"
+                        android:ems="10"
+                        android:gravity="center"
+                        android:hint="请输入酒店/目的地关键字"
+                        android:inputType="textMultiLine"
+                        android:paddingLeft="40dp"
+                        android:paddingRight="40dp"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/imageView3"
+                        android:layout_width="41dp"
+                        android:layout_height="41dp"
+                        android:background="@drawable/selector_btn_shape2"
+                        android:gravity="center"
+                        android:text="GO" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/selector_btn_shape2"
+                    android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha" />
+
+            </RelativeLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableLayout
+                    android:id="@+id/tbl_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:layout_margin="0.5dp"></TableLayout>
+            </HorizontalScrollView>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_search_view"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="-56dp"
-            android:layout_marginRight="2dp"
-            android:background="@drawable/selector_btn_shape1"
-            android:gravity="center"
-            android:layout_below="@+id/ll_top_content"
-            android:layout_alignParentEnd="true">
+        <RelativeLayout
+            android:id="@+id/rl_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true">
 
-            <TextView
-                android:id="@+id/btn_user"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:gravity="center"
-                android:background="@drawable/main_btn_shape_white"
-                android:text="搜索"
-                />
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_top_title"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/colorPrimary"
+                android:visibility="visible">
 
-    </RelativeLayout>
+            </LinearLayout>
 
-</LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_search_view"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/ll_top_title"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="-56dp"
+                android:background="@drawable/selector_btn_shape1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/btn_user"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:background="@drawable/main_btn_shape_white"
+                    android:gravity="center"
+                    android:text="搜索" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</android.support.design.widget.CollapsingToolbarLayout>
