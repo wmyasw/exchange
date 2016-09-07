@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -29,6 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.pc.ioc.app.Ioc;
 import com.android.pc.util.Handler_System;
@@ -39,6 +41,10 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author wmy
  * @Description: 基础activity，控制派生类状态
@@ -47,7 +53,7 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
  * @Package com.jdjt.exchange.activity
  * @Date 2016/8/31 16:44
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener{
     public static final String EXTRA_TITLE = "title";
     private Toolbar mActionBarToolbar;
     Context context;
@@ -87,19 +93,19 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    private LinearLayout ll_bottom_content;// 底部菜单 内容容器
-    public RelativeLayout rl_bottom_bar;  //底部标签点击部分
-    public int screenHeight = 0;        // 屏幕高度
-    public int screenWidth = 0;        // 屏幕宽度
-    private LinearLayout ll_btn_view;   //底部标签点击部分
-    LinearLayout.LayoutParams bottomlayoutParams;
-    LinearLayout.LayoutParams toplayoutParams;
-    private LinearLayout ll_top_content;// 顶菜单 内容容器
-    public RelativeLayout rl_top_bar;  //顶部标签点击部分
-    private LinearLayout ll_search_view;   //顶部标签点击部分
-    boolean userInfoShow = false;
-    boolean isShowFindBtn = false;
-
+    protected LinearLayout ll_bottom_content;// 底部菜单 内容容器
+    protected RelativeLayout rl_bottom_bar;  //底部标签点击部分
+    protected int screenHeight = 0;        // 屏幕高度
+    protected int screenWidth = 0;        // 屏幕宽度
+    protected LinearLayout ll_btn_view;   //底部标签点击部分
+    protected LinearLayout.LayoutParams bottomlayoutParams;
+    protected LinearLayout.LayoutParams toplayoutParams;
+    protected LinearLayout ll_top_content;// 顶菜单 内容容器
+    protected RelativeLayout rl_top_bar;  //顶部标签点击部分
+    protected LinearLayout ll_search_view;   //顶部标签点击部分
+    protected boolean userInfoShow = false;
+    protected boolean isShowFindBtn = false;
+    protected  TableLayout tbl;
 
     /**
      * 初始化页面控件
@@ -153,6 +159,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
+    Bitmap bitmap;//毛玻璃背景
     /**
      * 重新初始化 控件高度
      */
@@ -161,6 +168,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         ll_btn_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                 userInfoShow = false;
+
                 bottomlayoutParams.height = screenHeight / 5 * 3 - rl_bottom_bar.getHeight();
                 //初始化页移动 底部标签 点击部分
                 ViewHelper.setTranslationY(rl_bottom_bar, ll_bottom_content.getHeight());
@@ -177,13 +186,19 @@ public abstract class BaseActivity extends AppCompatActivity {
                     // 因为 在软键盘弹出后 会重新处理布局文件后会影响当前设置，所以在这里就直接 返回，不做布局调整
                         return;
                     }
-                    toplayoutParams.height = screenHeight - rl_top_bar.getHeight() - Handler_System.dip2px(10);
+                    isShowFindBtn = false;
+                    toplayoutParams.height = screenHeight - rl_top_bar.getHeight();
                     //初始化页移动 底部标签 点击部分
                     ViewHelper.setTranslationY(rl_top_bar, -ll_top_content.getHeight());
                     //初始化页移动 底部标签 内容部分
                     ViewHelper.setTranslationY(ll_top_content, -ll_top_content.getHeight());
+//                    bitmap=convertViewToBitmap(ll_bottom_content);
+//                    blur(bitmap ,ll_top_content);
+
                 }
             });
+
+
         }
     }
 
@@ -191,7 +206,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 初始化标签组
      */
     private void initTableLayout() {
-        TableLayout tbl = (TableLayout) findViewById(R.id.tbl_tag);
+         tbl = (TableLayout) findViewById(R.id.tbl_tag);
 
         TableRow.LayoutParams talbeRowLayoutParams = new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
         for (int i = 0; i < 10; i++) {
@@ -213,6 +228,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    private void setTageData(){
+    }
     /**
      * 标签组 展示view
      * @param content
@@ -223,8 +240,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private TextView getTextView(String content, int row, int col) {
         TextView text = new TextView(this);
         text.setText(content);
-        text.setTextSize(18);
-        text.setPadding(10, 0, 10, 0);
+        text.setTextSize(14);
+        text.setPadding(20,20, 20, 20);
         text.setGravity(Gravity.CENTER);
         text.setLayoutParams(getContentLayoutParams(row, col));
         text.setTextColor(getResources().getColor(R.color.white));
@@ -233,6 +250,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             text.setBackgroundColor(getResources().getColor(R.color.btn_shape1));
         } else {
             text.setBackgroundColor(getResources().getColor(R.color.half_brown));
+            text.setOnClickListener(this);
+            text.setTag(0,col);
         }
         return text;
     }
@@ -326,6 +345,18 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 页面控件点击事件处理
      */
     protected void initPageViewListener() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(!"isCheck".equals(v.getTag())) {
+            v.setTag("isCheck");
+            v.setBackgroundColor(getResources().getColor(R.color.btn_shape1));
+        }else {
+            v.setTag("");
+            v.setBackgroundColor(getResources().getColor(R.color.half_brown));
+        }
     }
 
     /**
