@@ -20,13 +20,16 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -36,13 +39,16 @@ import com.android.pc.ioc.app.Ioc;
 import com.android.pc.util.Handler_System;
 import com.android.pc.util.Handler_Ui;
 import com.jdjt.exchange.R;
+import com.jdjt.exchange.adapter.TagsAdapter;
 import com.jdjt.exchange.util.BitmapUtils;
+import com.jdjt.exchange.view.FlowLayout;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -98,8 +104,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected int screenHeight = 0;        // 屏幕高度
     protected int screenWidth = 0;        // 屏幕宽度
     protected LinearLayout ll_btn_view;   //底部标签点击部分
-    protected LinearLayout.LayoutParams bottomlayoutParams;
-    protected LinearLayout.LayoutParams toplayoutParams;
+    protected ViewGroup.LayoutParams bottomlayoutParams;
+    protected ViewGroup.LayoutParams toplayoutParams;
     protected LinearLayout ll_top_content;// 顶菜单 内容容器
     protected RelativeLayout rl_top_bar;  //顶部标签点击部分
     protected LinearLayout ll_search_view;   //顶部标签点击部分
@@ -120,7 +126,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         ll_btn_view = (LinearLayout) findViewById(R.id.ll_btn_view);
         //底部标签点击部分
         ll_bottom_content = (LinearLayout) findViewById(R.id.ll_bottom_content);
-        bottomlayoutParams = (LinearLayout.LayoutParams) ll_bottom_content.getLayoutParams();
+        bottomlayoutParams = (ViewGroup.LayoutParams) ll_bottom_content.getLayoutParams();
         ll_bottom_content.setLayoutParams(bottomlayoutParams);
         ll_btn_view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +143,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         ll_search_view = (LinearLayout) findViewById(R.id.ll_search_view);
         ll_top_content = (LinearLayout) findViewById(R.id.ll_top_content);
         if (rl_top_bar != null) {
-            toplayoutParams = (LinearLayout.LayoutParams) ll_top_content.getLayoutParams();
+            toplayoutParams = (ViewGroup.LayoutParams) ll_top_content.getLayoutParams();
             ll_top_content.setLayoutParams(toplayoutParams);
             ll_search_view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -168,13 +174,13 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         ll_btn_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                 userInfoShow = false;
+                userInfoShow = false;
 
-                bottomlayoutParams.height = screenHeight / 5 * 3 - rl_bottom_bar.getHeight();
+                bottomlayoutParams.height = screenHeight / 5 * 3 ;
                 //初始化页移动 底部标签 点击部分
-                ViewHelper.setTranslationY(rl_bottom_bar, ll_bottom_content.getHeight());
+                ViewHelper.setTranslationY(rl_bottom_bar, ll_bottom_content.getHeight()- rl_bottom_bar.getHeight());
                 //初始化页移动 底部标签 内容部分
-                ViewHelper.setTranslationY(ll_bottom_content, ll_bottom_content.getHeight());
+                ViewHelper.setTranslationY(ll_bottom_content, ll_bottom_content.getHeight()- rl_bottom_bar.getHeight());
             }
         });
         if (ll_search_view != null) {
@@ -183,17 +189,15 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                 public void onGlobalLayout() {
                     //判断隐藏软键盘是否弹出
                     if (getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
-                    // 因为 在软键盘弹出后 会重新处理布局文件后会影响当前设置，所以在这里就直接 返回，不做布局调整
+                        // 因为 在软键盘弹出后 会重新处理布局文件后会影响当前设置，所以在这里就直接 返回，不做布局调整
                         return;
                     }
                     isShowFindBtn = false;
-                    toplayoutParams.height = screenHeight - rl_top_bar.getHeight();
-                    //初始化页移动 底部标签 点击部分
-                    ViewHelper.setTranslationY(rl_top_bar, -ll_top_content.getHeight());
-                    //初始化页移动 底部标签 内容部分
-                    ViewHelper.setTranslationY(ll_top_content, -ll_top_content.getHeight());
-//                    bitmap=convertViewToBitmap(ll_bottom_content);
-//                    blur(bitmap ,ll_top_content);
+                    toplayoutParams.height = screenHeight;
+                    //初始化页移动 顶部标签 点击部分
+                    ViewHelper.setTranslationY(rl_top_bar, -ll_top_content.getHeight()+rl_top_bar.getHeight());
+                    //初始化页移动 顶部标签 内容部分
+                    ViewHelper.setTranslationY(ll_top_content, -ll_top_content.getHeight()+rl_top_bar.getHeight());
 
                 }
             });
@@ -206,10 +210,10 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * 初始化标签组
      */
     private void initTableLayout() {
-         tbl = (TableLayout) findViewById(R.id.tbl_tag);
+        tbl = (TableLayout) findViewById(R.id.tbl_tag);
 
         TableRow.LayoutParams talbeRowLayoutParams = new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 8; i++) {
             TableRow tableRow = new TableRow(this);
             tableRow.setLayoutParams(talbeRowLayoutParams);
             tableRow.setGravity(Gravity.CENTER);
@@ -228,8 +232,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    private void setTageData(){
-    }
+
     /**
      * 标签组 展示view
      * @param content
@@ -251,7 +254,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         } else {
             text.setBackgroundColor(getResources().getColor(R.color.half_brown));
             text.setOnClickListener(this);
-            text.setTag(0,col);
+//            text.setTag(0,col);
         }
         return text;
     }
@@ -266,6 +269,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         TableRow.LayoutParams params = new TableRow.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT);
         //为保证边框宽度均匀，唯有第一行需要topMargin，第一列需要leftMargin
         params.setMargins(col == 0 ? 1 : 0, row == 0 ? 1 : 0, 1, 1);
+
         return params;
     }
 
@@ -275,7 +279,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public void topShowAnimation() {
         isShowFindBtn = true;
 
-        showHideAnimation(rl_top_bar, ll_top_content, false);
+        showHideAnimation(rl_top_bar, ll_top_content, false,ll_top_content.getHeight()-rl_top_bar.getHeight());
 
     }
 
@@ -284,7 +288,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     private void topHidAnimation() {
         isShowFindBtn = false;
-        showHideAnimation(rl_top_bar, ll_top_content, true);
+        Ioc.getIoc().getLogger().i("asdadddddddd"+(rl_top_bar.getHeight()-ll_top_content.getHeight()));
+        showHideAnimation(rl_top_bar, ll_top_content, true,rl_top_bar.getHeight()-ll_top_content.getHeight());
 
     }
 
@@ -293,16 +298,15 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     private void bottomHidAnimation() {
         userInfoShow = false;
-        showHideAnimation(rl_bottom_bar, ll_bottom_content, userInfoShow);
+        showHideAnimation(rl_bottom_bar, ll_bottom_content, userInfoShow,ll_bottom_content.getHeight()- rl_bottom_bar.getHeight());
 
     }
-
     /**
      * 底部显示动画
      */
     private void bottomShowAnimation() {
         userInfoShow = true;
-        showHideAnimation(rl_bottom_bar, ll_bottom_content, userInfoShow);
+        showHideAnimation(rl_bottom_bar, ll_bottom_content, userInfoShow,rl_bottom_bar.getHeight()-ll_bottom_content.getHeight());
 
     }
 
@@ -313,13 +317,16 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * @param content 执行位移 计算高度的 内容控件
      * @param isShow  判断向上位移 和向下位移， 为false 向上位移，为true 向下位移
      */
-    private void showHideAnimation(final View title, final View content, boolean isShow) {
-        final int translation = isShow ? -content.getHeight() : content.getHeight();
-        ViewPropertyAnimator.animate(content).translationYBy(translation).setListener(new Animator.AnimatorListener() {
+    private void showHideAnimation(final View title, final View content, boolean isShow,int translation) {
+        if(translation==0){
+            translation = isShow ? -content.getHeight() : content.getHeight();
+        }
+        final int finalTranslation = translation;
+        ViewPropertyAnimator.animate(content).translationYBy(finalTranslation).setListener(new Animator.AnimatorListener() {
 
             @Override
             public void onAnimationStart(Animator animator) {
-                ViewPropertyAnimator.animate(title).translationYBy(translation).setDuration(500)
+                ViewPropertyAnimator.animate(title).translationYBy(finalTranslation).setDuration(500)
                         .start();
             }
 
@@ -348,17 +355,49 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    @Override
+    List<String> tgs;
     public void onClick(View v) {
+
         if(!"isCheck".equals(v.getTag())) {
             v.setTag("isCheck");
             v.setBackgroundColor(getResources().getColor(R.color.btn_shape1));
+            Map<String, String> tag=new HashMap<>();
+            tag.put("title",((TextView)v).getText()+"");
+            tag.put("code","123123");
+            initTags(setTageData(tag));
+
         }else {
+            Map<String, Object> tag=new HashMap<>();
+            tag.put("title",((TextView)v).getText());
+            tag.put("code","123123");
+            removeTag(tag);
             v.setTag("");
             v.setBackgroundColor(getResources().getColor(R.color.half_brown));
         }
-    }
 
+    }
+    List<Map<String, String>> tagData;
+    private  List<Map<String, String >> setTageData( Map<String, String> tag){
+        if(tagData==null)
+            tagData=new ArrayList<>();
+//        Map<String, Object> tag=new HashMap<>();
+//        tag.put("title","标签一");
+//        tag.put("code","123123");
+//        tagData.add(tag);
+//        tag=new HashMap<>();
+//        tag.put("title","标签er");
+//        tag.put("code","123123");
+//        tagData.add(tag);
+//        tag=new HashMap<>();
+//        tag.put("title","标签sa");
+//        tag.put("code","123123");
+//        tagData.add(tag);
+//        tag=new HashMap<>();
+//        tag.put("title","标签si");
+//        tag.put("code","123123");
+        tagData.add(tag);
+        return tagData;
+    }
     /**
      * 逻辑处理
      */
@@ -400,4 +439,60 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         return mActionBarToolbar;
     }
 
+
+    /**
+     * 设置标签组
+     *
+     * @param getData
+     */
+    private void initTags(List<Map<String, String>> getData) {
+        //新建适配器
+        String[] from = {"title"};
+        int[] to = {R.id.tags_name};
+        FlowLayout gl_tags = (FlowLayout) findViewById(R.id.gl_tags);
+        gl_tags.setHorizontalSpacing(1);
+        gl_tags.setVerticalSpacing(1);
+        TagsAdapter tagsAdapter=  new TagsAdapter(this);
+        tagsAdapter.setDataSource(tagData);
+        gl_tags.setAdapter(tagsAdapter);
+//        LayoutInflater inflater = LayoutInflater.from(this);
+//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        lp.setMargins(4, 4, 4, 4);
+//        for (int i = 0; i < tagData.size(); i++) {
+//            LinearLayout linearLayout = new LinearLayout(this);
+//            TextView textView = new TextView(this);
+//            textView.setText(getData.get(i).get("title") + "");
+//
+//            textView.setWidth((screenWidth/5)-20);
+//            textView.setHeight(100);
+//            textView.setPadding(4, 4, 4, 4);
+//            textView.setGravity(Gravity.CENTER);
+//            textView.setLayoutParams(lp);
+//            textView.setTextColor(Color.WHITE);
+//            textView.setBackgroundResource(R.drawable.main_bg_shape);
+//
+//            linearLayout.addView(textView);
+//            gl_tags.addView(linearLayout);
+//        }
+    }
+
+    /**
+     * 删除标签
+     * @param getData
+     */
+    private void removeTag(Map<String, Object> getData) {
+        //新建适配器
+        String[] from = {"title"};
+        int[] to = {R.id.tags_name};
+        FlowLayout gl_tags = (FlowLayout) findViewById(R.id.gl_tags);
+
+//        LayoutInflater inflater = LayoutInflater.from(this);
+
+        for (int i = 0; i < tagData.size(); i++) {
+            if(getData.get("title").equals(tagData.get(i).get("title")+"")){
+                gl_tags.removeViewAt(i);
+                tagData.remove(i);
+            }
+        }
+    }
 }
