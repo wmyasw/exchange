@@ -14,4 +14,7 @@
     <color name="half_white_75">#bfffffff</color>
     <!-- title背景色 咖色  80% b不透明-->
     <color name="title_bg_80">#c7c7c7</color>
+
+    <!-- 文字颜色(重要突出字,强调字,白色背景装饰字,浅灰色背景装饰字) 绿色 -->
+    <color name="text_color_green">#6fa78e</color>
 </resources>
