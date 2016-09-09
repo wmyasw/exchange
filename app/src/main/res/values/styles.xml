@@ -18,7 +18,7 @@
         <item name="android:background">@color/half_full</item>
     </style>
 
-    <style name="ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+    <style name="ActionBar.TitleText" parent="AppTheme">
         <item name="android:textColor">#fff</item>
         <item name="android:textSize">18sp</item>
         <!--<item name="android:gravity">center</item>-->
@@ -27,7 +27,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -58,5 +58,24 @@
         <item name="android:background">@drawable/main_bg_shape</item>
         <item name="android:textColor">@drawable/text_state_whitetogreen</item>
         <item name="android:textSize">@dimen/textsize_32</item>
+    </style>
+
+
+    <!--Material 进入动画效果-->
+    <style name="myTheme" parent="android:Theme.Material">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!-- 允许使用transitions -->
+        <item name="android:windowContentTransitions">true</item>
+
+        <!-- 指定进入和退出transitions -->
+        <item name="android:windowEnterTransition">@transition/explode</item>
+        <item name="android:windowExitTransition">@transition/explode</item>
+
+        <!-- 指定shared element transitions -->
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/change_image_transform</item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/change_image_transform</item>
     </style>
 </resources>

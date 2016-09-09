@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#e33f51b5</color>
+    <color name="colorPrimary1">#5363bb</color>
     <color name="colorPrimaryDark">#e6303f9f</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
-    <color name="half_full">#00000000</color>
+    <color name="half_full">#003f51b5</color>
     <color name="btn_shape1">#a4a1a1</color>
     <color name="btn_shape2">#847678</color>
     <color name="half_brown">#26000000</color>

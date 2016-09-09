@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transition xmlns:android=" CodeGo.net">
+ <!-- The drawables used here can be solid colors, gradients, shapes, images, etc. -->
+ <item android:drawable="@drawable/main_btn_shape_white" />
+ <item android:drawable="@drawable/main_ll_fillet_half" />
+</transition>

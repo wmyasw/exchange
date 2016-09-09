@@ -1,10 +1,14 @@
 package com.jdjt.exchange.adapter;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.android.pc.util.Handler_System;
 import com.jdjt.exchange.R;
 
 import java.util.List;
@@ -18,10 +22,16 @@ import java.util.Map;
  * @Package com.jdjt.exchange.adapter
  * @Date 2016/9/8 17:46
  */
-public class TagsAdapter extends AppBaseAdapter<Map<String,String>,AppBaseAdapter.BaseViewHolder> {
+public class TagsAdapter extends AppBaseAdapter<Map<String, String>, AppBaseAdapter.BaseViewHolder> {
+    int screenHeight;
+    int screenWidth;
 
     public TagsAdapter(Context context) {
         super(context);
+        DisplayMetrics dm = new DisplayMetrics();
+        ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
+        screenHeight = dm.heightPixels;
+        screenWidth = dm.widthPixels;
     }
 
     @Override
@@ -34,7 +44,8 @@ public class TagsAdapter extends AppBaseAdapter<Map<String,String>,AppBaseAdapte
         String map = data.get("title");
 
         TextView txt = holder.getView(R.id.tags_name);
-
+        txt.setWidth(screenWidth/5- Handler_System.dip2px(4));
+        txt.setGravity(Gravity.CENTER);
         txt.setText(map);
 
     }

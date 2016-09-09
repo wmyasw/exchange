@@ -1,5 +1,6 @@
 package com.jdjt.exchange.activity;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.pc.ioc.app.Ioc;
 import com.android.pc.util.Handler_System;
@@ -39,7 +41,10 @@ public class MainActivity extends BaseActivity
 
     FrameLayout frameLayout;
     FrameLayout.LayoutParams garrlyParams;
-RelativeLayout ll_content_hotel_btn;
+    RelativeLayout ll_content_hotel_btn;
+    TextView
+            btn_hotel;
+
     @Override
     protected int initPageLayoutID() {
         return R.layout.activity_main;
@@ -52,18 +57,19 @@ RelativeLayout ll_content_hotel_btn;
         img_gallery = (IMGGallery) findViewById(R.id.img_gallery);
         frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
         garrlyParams = (FrameLayout.LayoutParams) img_gallery.getLayoutParams();
-        ll_content_hotel_btn= (RelativeLayout) findViewById(R.id.ll_content_hotel_btn);
-
+        ll_content_hotel_btn = (RelativeLayout) findViewById(R.id.ll_content_hotel_btn);
+        btn_hotel = (TextView) findViewById(R.id.btn_hotel);
         img_gallery.setLayoutParams(garrlyParams);
         ViewTreeObserver1();
     }
+
     private void ViewTreeObserver1() {
         img_gallery.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 Ioc.getIoc().getLogger().i("*******************" + ll_content_hotel_btn.getHeight());
 
-                garrlyParams.height =(screenHeight / 5 * 2 -rl_bottom_bar.getHeight()-Handler_System.dip2px(10));
+                garrlyParams.height = (screenHeight / 5 * 2 - rl_bottom_bar.getHeight() - Handler_System.dip2px(10));
             }
         });
     }
@@ -84,6 +90,16 @@ RelativeLayout ll_content_hotel_btn;
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    @Override
+    protected void initPageViewListener() {
+        super.initPageViewListener();
+        btn_hotel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
@@ -112,6 +128,9 @@ RelativeLayout ll_content_hotel_btn;
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SearchActivity.class));
+//            startActivity(new Intent(this, SearchActivity.class),
+//
+//                    ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
             return true;
         }
 

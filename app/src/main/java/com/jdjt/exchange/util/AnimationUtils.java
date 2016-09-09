@@ -1,8 +1,14 @@
 package com.jdjt.exchange.util;
 
+import android.graphics.Color;
 import android.view.View;
 
+import com.android.pc.ioc.app.Ioc;
+import com.jdjt.exchange.R;
 import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.ArgbEvaluator;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
 /**
@@ -45,5 +51,29 @@ public class AnimationUtils {
             }
         }).setDuration(500).start();
     }
+    /**
+     * 开始背景动画（此处为属性动画）
+     */
+    public  static void startBackgroundAnimator(final View view){
+        /*
+         *参数解释：
+         *target：设置属性动画的目标类，此处是当前自定义view所以使用this
+         *propertyName:属性名称。（要对View的那个属性执行动画操作）
+         *values数组：根据时间的推移动画将根据数组的内容进行改变
+         */
 
+        int colorStar= Ioc.getIoc().getApplication().getResources().getColor(R.color.white);
+        int colorEnd= Ioc.getIoc().getApplication().getResources().getColor(R.color.half_full);
+//        ValueAnimator anim = ObjectAnimator.ofInt(view, "backgroundColor",colorStar,colorEnd);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorStar,colorEnd);
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                view.setBackgroundColor((Integer)animator.getAnimatedValue());
+            }
+        });
+        colorAnimation.setDuration(500);
+        colorAnimation.start();
+
+    }
 }
