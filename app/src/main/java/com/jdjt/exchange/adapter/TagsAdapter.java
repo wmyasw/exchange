@@ -26,12 +26,12 @@ public class TagsAdapter extends AppBaseAdapter<Map<String,String>,AppBaseAdapte
 
     @Override
     protected BaseViewHolder createViewHolder(int position, ViewGroup parent) {
-        return new BaseViewHolder(View.inflate(getContext(), R.layout.layout_tags_item,null));
+        return new BaseViewHolder(View.inflate(getContext(), R.layout.layout_tags_item, null));
     }
 
     @Override
-    protected void bindViewHolder(BaseViewHolder holder, int position,Map<String, String> data) {
-        String map= data.get("title");
+    protected void bindViewHolder(BaseViewHolder holder, int position, Map<String, String> data) {
+        String map = data.get("title");
 
         TextView txt = holder.getView(R.id.tags_name);
         txt.setText(map);
@@ -43,5 +43,4 @@ public class TagsAdapter extends AppBaseAdapter<Map<String,String>,AppBaseAdapte
 //        TextView txt = holder.getView(R.id.tags_name);
 //        txt.setText(data+"");
 //    }
-
 }

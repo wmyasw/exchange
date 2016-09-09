@@ -14,7 +14,5 @@
         android:textColor="@color/white"
         android:textSize="@dimen/textsize_26"
         android:padding="6dp"
-        android:layout_margin="1dp"
-        android:id="@+id/tags_name"
-        android:layout_gravity="center_horizontal" />
+        android:layout_margin="1dp"/>
 </LinearLayout>
