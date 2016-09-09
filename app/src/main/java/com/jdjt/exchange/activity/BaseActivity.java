@@ -1,46 +1,30 @@
 package com.jdjt.exchange.activity;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.renderscript.Allocation;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.pc.ioc.app.Ioc;
+import com.android.pc.ioc.db.table.TableUtils;
 import com.android.pc.util.Handler_System;
-import com.android.pc.util.Handler_Ui;
 import com.jdjt.exchange.R;
 import com.jdjt.exchange.adapter.TagsAdapter;
-import com.jdjt.exchange.util.BitmapUtils;
+import com.jdjt.exchange.util.AnimationUtils;
 import com.jdjt.exchange.view.FlowLayout;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.view.ViewHelper;
@@ -112,16 +96,30 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected boolean userInfoShow = false;
     protected boolean isShowFindBtn = false;
     protected  TableLayout tbl;
-
+    RelativeLayout rl_top_view;
+    RelativeLayout rl_bottom_view;
+    protected TextView tag0,tag1,tag2,tag3;
     /**
      * 初始化页面控件
      */
     protected void initPageView() {
+        // 获取当前屏幕的宽高
         DisplayMetrics dm = new DisplayMetrics();
         ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(dm);
         screenHeight = dm.heightPixels;
         screenWidth = dm.widthPixels;
-        /**底部菜单布局声明**/
+        initBottomToolBar();
+        iniTopToolBar();
+        ViewTreeObserver();
+
+    }
+
+    /**
+     * 底部菜单布局声明
+     */
+    private void initBottomToolBar() {
+        //底部菜单整体布局view
+        rl_bottom_view = (RelativeLayout) findViewById(R.id.rl_bottom_view);
         rl_bottom_bar = (RelativeLayout) findViewById(R.id.rl_bottom_bar);
         ll_btn_view = (LinearLayout) findViewById(R.id.ll_btn_view);
         //底部标签点击部分
@@ -138,7 +136,21 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                 }
             }
         });
-        /**顶部菜单布局声明**/
+    }
+
+    /**
+     * 顶部菜单布局声明
+     **/
+    private void iniTopToolBar(){
+
+        //一直在顶部展示的筛选标签
+        tag0 = (TextView) findViewById(R.id.tag0);
+        tag1= (TextView) findViewById(R.id.tag1);
+        tag2= (TextView) findViewById(R.id.tag2);
+        tag3= (TextView) findViewById(R.id.tag3);
+
+
+        rl_top_view = (RelativeLayout) findViewById(R.id.rl_top_view);
         rl_top_bar = (RelativeLayout) findViewById(R.id.rl_top_bar);
         ll_search_view = (LinearLayout) findViewById(R.id.ll_search_view);
         ll_top_content = (LinearLayout) findViewById(R.id.ll_top_content);
@@ -160,12 +172,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             });
             initTableLayout();
         }
-        ViewTreeObserver();
-
     }
 
-
-    Bitmap bitmap;//毛玻璃背景
     /**
      * 重新初始化 控件高度
      */
@@ -177,12 +185,11 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                  userInfoShow = false;
 
                 bottomlayoutParams.height = screenHeight / 5 * 3 ;
-                //初始化页移动 底部标签 点击部分
-                ViewHelper.setTranslationY(rl_bottom_bar, ll_bottom_content.getHeight()- rl_bottom_bar.getHeight());
-                //初始化页移动 底部标签 内容部分
-                ViewHelper.setTranslationY(ll_bottom_content, ll_bottom_content.getHeight()- rl_bottom_bar.getHeight());
+                //初始化 标签位置
+                ViewHelper.setTranslationY(rl_bottom_view, ll_bottom_content.getHeight()- rl_bottom_bar.getHeight());
             }
         });
+        // 如果当前 的搜索调前为null 则不做如下处理
         if (ll_search_view != null) {
             ll_top_content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
@@ -194,10 +201,16 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                     }
                     isShowFindBtn = false;
                     toplayoutParams.height = screenHeight;
-                    //初始化页移动 顶部标签 点击部分
-                    ViewHelper.setTranslationY(rl_top_bar, -ll_top_content.getHeight()+rl_top_bar.getHeight());
-                    //初始化页移动 顶部标签 内容部分
-                    ViewHelper.setTranslationY(ll_top_content, -ll_top_content.getHeight()+rl_top_bar.getHeight());
+                    LinearLayout.LayoutParams textParams=  new LinearLayout.LayoutParams((screenWidth-Handler_System.dip2px(80))/4, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    textParams.setMargins(2,2,2,2);
+//                    textParams.weight=screenWidth/5;
+//
+                    tag0.setLayoutParams(textParams);
+                    tag1.setLayoutParams(textParams);
+                    tag2.setLayoutParams(textParams);
+                    tag3.setLayoutParams(textParams);
+                    //初始化 标签位置
+                    ViewHelper.setTranslationY(rl_top_view, -ll_top_content.getHeight()+rl_top_bar.getHeight());
 
                 }
             });
@@ -206,12 +219,15 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    Map<String,List> map;
+    List<TextView> list=null;
     /**
      * 初始化标签组
      */
     private void initTableLayout() {
          tbl = (TableLayout) findViewById(R.id.tbl_tag);
-
+        map=new HashMap<>();
+         list=new ArrayList<>();
         TableRow.LayoutParams talbeRowLayoutParams = new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
         for (int i = 0; i < 8; i++) {
             TableRow tableRow = new TableRow(this);
@@ -227,7 +243,12 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                     content = i + "内容" + j;
                 }
                 tableRow.addView(getTextView(content, i, j));
+                if(j==0||j==1||j==2||j==3){
+                    list.add(getTextView(content, i, j));
+                }
+
             }
+
             tbl.addView(tableRow);
         }
     }
@@ -254,7 +275,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         } else {
             text.setBackgroundColor(getResources().getColor(R.color.half_brown));
             text.setOnClickListener(this);
-//            text.setTag(0,col);
+            text.setTag(R.id.colCode,col+"");
         }
         return text;
     }
@@ -278,9 +299,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     public void topShowAnimation() {
         isShowFindBtn = true;
-
-        showHideAnimation(rl_top_bar, ll_top_content, false,ll_top_content.getHeight()-rl_top_bar.getHeight());
-
+        AnimationUtils.showHideAnimation(rl_top_view, false,ll_top_content.getHeight()-rl_top_bar.getHeight());
     }
 
     /**
@@ -288,8 +307,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     private void topHidAnimation() {
         isShowFindBtn = false;
-        Ioc.getIoc().getLogger().i("asdadddddddd"+(rl_top_bar.getHeight()-ll_top_content.getHeight()));
-        showHideAnimation(rl_top_bar, ll_top_content, true,rl_top_bar.getHeight()-ll_top_content.getHeight());
+        AnimationUtils.showHideAnimation( rl_top_view, true,rl_top_bar.getHeight()-ll_top_content.getHeight());
 
     }
 
@@ -298,7 +316,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     private void bottomHidAnimation() {
         userInfoShow = false;
-        showHideAnimation(rl_bottom_bar, ll_bottom_content, userInfoShow,ll_bottom_content.getHeight()- rl_bottom_bar.getHeight());
+        AnimationUtils.showHideAnimation( rl_bottom_view, userInfoShow,ll_bottom_content.getHeight()- rl_bottom_bar.getHeight());
 
     }
     /**
@@ -306,45 +324,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     private void bottomShowAnimation() {
         userInfoShow = true;
-        showHideAnimation(rl_bottom_bar, ll_bottom_content, userInfoShow,rl_bottom_bar.getHeight()-ll_bottom_content.getHeight());
+        AnimationUtils.showHideAnimation(rl_bottom_view, userInfoShow,rl_bottom_bar.getHeight()-ll_bottom_content.getHeight());
 
-    }
-
-    /**
-     * 位移动画
-     *
-     * @param title   需要跟随的标题view
-     * @param content 执行位移 计算高度的 内容控件
-     * @param isShow  判断向上位移 和向下位移， 为false 向上位移，为true 向下位移
-     */
-    private void showHideAnimation(final View title, final View content, boolean isShow,int translation) {
-        if(translation==0){
-            translation = isShow ? -content.getHeight() : content.getHeight();
-        }
-        final int finalTranslation = translation;
-        ViewPropertyAnimator.animate(content).translationYBy(finalTranslation).setListener(new Animator.AnimatorListener() {
-
-            @Override
-            public void onAnimationStart(Animator animator) {
-                ViewPropertyAnimator.animate(title).translationYBy(finalTranslation).setDuration(500)
-                        .start();
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        }).setDuration(500).start();
     }
 
 
@@ -355,46 +336,57 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     }
 
-   List<String> tgs;
     public void onClick(View v) {
+        Ioc.getIoc().getLogger().i("colcode==="+tbl.getChildAt(2).getTag());
+//        for(TextView textView:list){
+//            if(v.getTag(R.id.colCode).equals(textView.getTag(R.id.colCode))){
+//                Ioc.getIoc().getLogger().i("colcode==="+tbl.getChildAt(0).getTag());
+//                textView.setBackgroundColor(getResources().getColor(R.color.half_brown));
+//                textView.setText("点击了");
+//            }
+//        }
+        v.setBackgroundColor(getResources().getColor(R.color.btn_shape1));
+        switch (Integer.valueOf(v.getTag(R.id.colCode)+"")){
+            case 0:
+                tag0.setText(((TextView)v).getText()+"");
+                break;
+            case 1:
+                tag1.setText(((TextView)v).getText()+"");
+                break;
+            case 2:
+                tag2.setText(((TextView)v).getText()+"");
+                break;
+            case 3:
+                tag3.setText(((TextView)v).getText()+"");
+                break;
+            default:
+                if(!"isCheck".equals(v.getTag())) {
+                    v.setTag("isCheck");
+                    v.setBackgroundColor(getResources().getColor(R.color.btn_shape1));
+                    Map<String, String> tag=new HashMap<>();
+                    tag.put("title",((TextView)v).getText()+"");
+                    tag.put("code","");
+                    initTags(setTageData(tag));
 
-        if(!"isCheck".equals(v.getTag())) {
-            v.setTag("isCheck");
-            v.setBackgroundColor(getResources().getColor(R.color.btn_shape1));
-            Map<String, String> tag=new HashMap<>();
-            tag.put("title",((TextView)v).getText()+"");
-            tag.put("code","123123");
-            initTags(setTageData(tag));
-
-        }else {
-            Map<String, Object> tag=new HashMap<>();
-            tag.put("title",((TextView)v).getText());
-            tag.put("code","123123");
-            removeTag(tag);
-            v.setTag("");
-            v.setBackgroundColor(getResources().getColor(R.color.half_brown));
+                }else {
+                    v.setTag("");
+                    v.setBackgroundColor(getResources().getColor(R.color.half_brown));
+                    if(!"0".equals(v.getTag(R.id.colCode))&&!"1".equals(v.getTag(R.id.colCode))&&!"2".equals(v.getTag(R.id.colCode))&&!"3".equals(v.getTag(R.id.colCode))) {
+                        Map<String, Object> tag = new HashMap<>();
+                        tag.put("title", ((TextView) v).getText());
+                        tag.put("code", "123123");
+                        removeTag(tag);
+                    }
+                }
+                break;
         }
+
 
     }
     List<Map<String, String>> tagData;
     private  List<Map<String, String >> setTageData( Map<String, String> tag){
         if(tagData==null)
             tagData=new ArrayList<>();
-//        Map<String, Object> tag=new HashMap<>();
-//        tag.put("title","标签一");
-//        tag.put("code","123123");
-//        tagData.add(tag);
-//        tag=new HashMap<>();
-//        tag.put("title","标签er");
-//        tag.put("code","123123");
-//        tagData.add(tag);
-//        tag=new HashMap<>();
-//        tag.put("title","标签sa");
-//        tag.put("code","123123");
-//        tagData.add(tag);
-//        tag=new HashMap<>();
-//        tag.put("title","标签si");
-//        tag.put("code","123123");
         tagData.add(tag);
         return tagData;
     }
@@ -447,33 +439,12 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     private void initTags(List<Map<String, String>> getData) {
         //新建适配器
-        String[] from = {"title"};
-        int[] to = {R.id.tags_name};
         FlowLayout gl_tags = (FlowLayout) findViewById(R.id.gl_tags);
         gl_tags.setHorizontalSpacing(1);
         gl_tags.setVerticalSpacing(1);
         TagsAdapter tagsAdapter=  new TagsAdapter(this);
         tagsAdapter.setDataSource(tagData);
         gl_tags.setAdapter(tagsAdapter);
-//        LayoutInflater inflater = LayoutInflater.from(this);
-//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        lp.setMargins(4, 4, 4, 4);
-//        for (int i = 0; i < tagData.size(); i++) {
-//            LinearLayout linearLayout = new LinearLayout(this);
-//            TextView textView = new TextView(this);
-//            textView.setText(getData.get(i).get("title") + "");
-//
-//            textView.setWidth((screenWidth/5)-20);
-//            textView.setHeight(100);
-//            textView.setPadding(4, 4, 4, 4);
-//            textView.setGravity(Gravity.CENTER);
-//            textView.setLayoutParams(lp);
-//            textView.setTextColor(Color.WHITE);
-//            textView.setBackgroundResource(R.drawable.main_bg_shape);
-//
-//            linearLayout.addView(textView);
-//            gl_tags.addView(linearLayout);
-//        }
     }
 
     /**
@@ -481,13 +452,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * @param getData
      */
     private void removeTag(Map<String, Object> getData) {
-        //新建适配器
-        String[] from = {"title"};
-        int[] to = {R.id.tags_name};
         FlowLayout gl_tags = (FlowLayout) findViewById(R.id.gl_tags);
-
-//        LayoutInflater inflater = LayoutInflater.from(this);
-
         for (int i = 0; i < tagData.size(); i++) {
             if(getData.get("title").equals(tagData.get(i).get("title")+"")){
                 gl_tags.removeViewAt(i);
