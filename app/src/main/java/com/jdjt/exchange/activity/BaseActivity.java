@@ -174,7 +174,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         ll_btn_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                userInfoShow = false;
+                 userInfoShow = false;
 
                 bottomlayoutParams.height = screenHeight / 5 * 3 ;
                 //初始化页移动 底部标签 点击部分
@@ -189,7 +189,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                 public void onGlobalLayout() {
                     //判断隐藏软键盘是否弹出
                     if (getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
-                        // 因为 在软键盘弹出后 会重新处理布局文件后会影响当前设置，所以在这里就直接 返回，不做布局调整
+                    // 因为 在软键盘弹出后 会重新处理布局文件后会影响当前设置，所以在这里就直接 返回，不做布局调整
                         return;
                     }
                     isShowFindBtn = false;
@@ -210,7 +210,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * 初始化标签组
      */
     private void initTableLayout() {
-        tbl = (TableLayout) findViewById(R.id.tbl_tag);
+         tbl = (TableLayout) findViewById(R.id.tbl_tag);
 
         TableRow.LayoutParams talbeRowLayoutParams = new TableRow.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
         for (int i = 0; i < 8; i++) {
@@ -355,7 +355,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    List<String> tgs;
+   List<String> tgs;
     public void onClick(View v) {
 
         if(!"isCheck".equals(v.getTag())) {

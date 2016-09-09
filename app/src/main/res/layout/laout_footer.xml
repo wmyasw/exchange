@@ -4,50 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/rl_bottom_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/rl_bottom_bar"
-            android:layout_width="match_parent"
-            android:layout_height="86dp"
-            android:layout_centerHorizontal="true">
-
-            <LinearLayout
-                android:id="@+id/bottomPanel1"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/colorPrimary"
-                android:visibility="visible">
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_btn_view"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_above="@+id/bottomPanel1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="-50dp"
-                android:background="@drawable/selector_btn_shape1"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/btn_user"
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:background="@drawable/main_btn_shape_white"
-                    android:gravity="center"
-                    android:text="用户" />
-            </LinearLayout>
-        </RelativeLayout>
-
         <LinearLayout
             android:id="@+id/ll_bottom_content"
             android:layout_width="match_parent"
@@ -61,7 +24,38 @@
                 android:gravity="center"
                 android:text="asdasdasdasdasd玩gals发生 阿斯顿阿隆索" />
         </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/rl_bottom_bar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="-50dp"
+            android:layout_above="@+id/ll_bottom_content"
+            android:layout_centerHorizontal="true">
 
-    </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_btn_view"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+
+                android:layout_centerHorizontal="true"
+
+                android:background="@drawable/selector_btn_shape1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/btn_user"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:background="@drawable/main_btn_shape_white"
+                    android:gravity="center"
+                    android:text="用户" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

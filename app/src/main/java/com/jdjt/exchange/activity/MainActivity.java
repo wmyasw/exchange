@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity
 
     FrameLayout frameLayout;
     FrameLayout.LayoutParams garrlyParams;
-
+RelativeLayout ll_content_hotel_btn;
     @Override
     protected int initPageLayoutID() {
         return R.layout.activity_main;
@@ -52,19 +52,18 @@ public class MainActivity extends BaseActivity
         img_gallery = (IMGGallery) findViewById(R.id.img_gallery);
         frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
         garrlyParams = (FrameLayout.LayoutParams) img_gallery.getLayoutParams();
-
+        ll_content_hotel_btn= (RelativeLayout) findViewById(R.id.ll_content_hotel_btn);
 
         img_gallery.setLayoutParams(garrlyParams);
         ViewTreeObserver1();
     }
-
     private void ViewTreeObserver1() {
         img_gallery.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                Ioc.getIoc().getLogger().i("*******************" + rl_bottom_bar.getHeight());
+                Ioc.getIoc().getLogger().i("*******************" + ll_content_hotel_btn.getHeight());
 
-                garrlyParams.height =Handler_System.dip2px(22)+(screenHeight / 5 * 2 - rl_bottom_bar.getHeight());
+                garrlyParams.height =(screenHeight / 5 * 2 -rl_bottom_bar.getHeight()-Handler_System.dip2px(10));
             }
         });
     }

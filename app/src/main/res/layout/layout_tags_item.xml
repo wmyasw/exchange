@@ -9,10 +9,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/AppBtn"
         android:text="11122"
+        android:background="@drawable/main_bg_shape"
+        android:textColor="@color/white"
         android:textSize="@dimen/textsize_26"
         android:padding="6dp"
+        android:layout_margin="1dp"
         android:id="@+id/tags_name"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

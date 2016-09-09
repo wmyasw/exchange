@@ -8,4 +8,26 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <!-- 20号字体 -->
+    <dimen name="textsize_20">11sp</dimen>
+    <!-- 22号字体 -->
+    <dimen name="textsize_22">12sp</dimen>
+    <!-- 24号字体 -->
+    <dimen name="textsize_24">13sp</dimen>
+    <!-- 26号字体 -->
+    <dimen name="textsize_26">14sp</dimen>
+    <!-- 28号字体 -->
+    <dimen name="textsize_28">15sp</dimen>
+    <!-- 30号字体 -->
+    <dimen name="textsize_30">17sp</dimen>
+    <!-- 32号字体 -->
+    <dimen name="textsize_32">18sp</dimen>
+    <!-- 36号字体 -->
+    <dimen name="textsize_36">20sp</dimen>
+    <!-- 48号字体 -->
+    <dimen name="textsize_48">26sp</dimen>
+    <!-- 50号字体 -->
+    <dimen name="textsize_50">28sp</dimen>
+    <!-- 72号字体 -->
+    <dimen name="textsize_72">40sp</dimen>
 </resources>
