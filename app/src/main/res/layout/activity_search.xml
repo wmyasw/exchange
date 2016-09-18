@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent" android:fitsSystemWindows="true"
     tools:context="com.jdjt.exchange.activity.SearchActivity">
 
 
@@ -16,4 +16,4 @@
 
     <include layout="@layout/laout_footer"/>
     <include layout="@layout/laout_top"/>
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

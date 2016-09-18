@@ -28,6 +28,8 @@
     <dimen name="textsize_48">26sp</dimen>
     <!-- 50号字体 -->
     <dimen name="textsize_50">28sp</dimen>
+    <!-- 50号字体 -->
+    <dimen name="textsize_60">34sp</dimen>
     <!-- 72号字体 -->
     <dimen name="textsize_72">40sp</dimen>
 </resources>

@@ -24,7 +24,7 @@ public class AnimationUtils {
      * @param content 执行位移 计算高度的 内容控件
      * @param isShow  判断向上位移 和向下位移， 为false 向上位移，为true 向下位移
      */
-    public static void showHideAnimation(final View content, boolean isShow, int translation) {
+    public static void showHideAnimation(final View content, boolean isShow, int translation, final View btn) {
         if(translation==0){
             translation = isShow ? -content.getHeight() : content.getHeight();
         }
@@ -33,11 +33,12 @@ public class AnimationUtils {
 
             @Override
             public void onAnimationStart(Animator animator) {
+                btn.setEnabled(false);
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
-
+                btn.setEnabled(true);
             }
 
             @Override

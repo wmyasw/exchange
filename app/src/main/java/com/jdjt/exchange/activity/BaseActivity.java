@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -134,7 +135,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         ViewTreeObserver();
 
     }
-
+    LinearLayout footer_layout_context,toolbar_submit;
     /**
      * 底部菜单布局声明
      */
@@ -143,13 +144,18 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         rl_bottom_view = (RelativeLayout) findViewById(R.id.rl_bottom_view);
         rl_bottom_bar = (RelativeLayout) findViewById(R.id.rl_bottom_bar);
         ll_btn_view = (LinearLayout) findViewById(R.id.ll_btn_view);
+        toolbar_submit= (LinearLayout) findViewById(R.id.toolbar_submit);
+        footer_layout_context = (LinearLayout) findViewById(R.id.footer_layout_context);
         //底部标签点击部分
         ll_bottom_content = (LinearLayout) findViewById(R.id.ll_bottom_content);
         bottomlayoutParams = (ViewGroup.LayoutParams) ll_bottom_content.getLayoutParams();
+
+
         ll_bottom_content.setLayoutParams(bottomlayoutParams);
         ll_btn_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ll_bottom_content.clearAnimation();
                 if (!userInfoShow) { //判断当前底部惨淡是否显示，
                     bottomShowAnimation();
                 } else {
@@ -215,12 +221,14 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             ll_search_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ll_top_content.clearAnimation();
                     if (!isShowFindBtn) { //判断当前顶部菜单是否拉伸
                         if (userInfoShow) { //判断底部菜单是否显示，显示的话进行隐藏操作
                             bottomHidAnimation();
+//                            ll_bottom_content.clearAnimation();
                         }
-                        ll_content.setVisibility(View.VISIBLE);
                         topShowAnimation();
+                        ll_content.setVisibility(View.VISIBLE);
                         editText.requestFocus();
                     } else {
                         ll_content.setVisibility(View.GONE);
@@ -247,7 +255,9 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
                 bottomlayoutParams.height = screenHeight / 5 * 3;
                 //初始化 标签位置
-                ViewHelper.setTranslationY(rl_bottom_view, ll_bottom_content.getHeight() - rl_bottom_bar.getHeight());
+                ViewHelper.setTranslationY(rl_bottom_view, ll_bottom_content.getHeight() - rl_bottom_bar.getHeight()+Handler_System.dip2px(4) );
+                //初始化 标签位置
+//                ViewHelper.setTranslationY(toolbar_submit, toolbar_submit.getHeight());
             }
         });
         // 如果当前 的搜索调前为null 则不做如下处理
@@ -258,6 +268,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                     //判断隐藏软键盘是否弹出
                     if (getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
                         // 因为 在软键盘弹出后 会重新处理布局文件后会影响当前设置，所以在这里就直接 返回，不做布局调整
+                        Toast.makeText(getApplicationContext(), "默认Toast样式",
+                                Toast.LENGTH_SHORT).show();
                         return;
                     }
                     isShowFindBtn = false;
@@ -451,7 +463,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     public void topShowAnimation() {
         isShowFindBtn = true;
-        AnimationUtils.showHideAnimation(rl_top_view, false, ll_top_content.getHeight() - rl_top_bar.getHeight()+Handler_System.dip2px(10));
+        AnimationUtils.showHideAnimation(rl_top_view, false, ll_top_content.getHeight() - rl_top_bar.getHeight()+Handler_System.dip2px(10),ll_search_view);
         initSearCh(isShowFindBtn);
     }
 
@@ -479,7 +491,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     private void topHidAnimation() {
         isShowFindBtn = false;
-        AnimationUtils.showHideAnimation(rl_top_view, true, rl_top_bar.getHeight()-Handler_System.dip2px(10)- ll_top_content.getHeight());
+        AnimationUtils.showHideAnimation(rl_top_view, true, rl_top_bar.getHeight()-Handler_System.dip2px(10)- ll_top_content.getHeight(),ll_search_view);
         initSearCh(isShowFindBtn);
     }
 
@@ -488,8 +500,11 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     private void bottomHidAnimation() {
         userInfoShow = false;
-        AnimationUtils.showHideAnimation(rl_bottom_view, userInfoShow, ll_bottom_content.getHeight() - rl_bottom_bar.getHeight());
-
+        AnimationUtils.showHideAnimation(rl_bottom_view, userInfoShow, ll_bottom_content.getHeight() - rl_bottom_bar.getHeight()+Handler_System.dip2px(4),ll_btn_view);
+        if(footer_layout_context!=null) {
+            ViewPropertyAnimator.animate(footer_layout_context).translationYBy(-Handler_System.dip2px(50)).setDuration(500).start();
+//            ViewPropertyAnimator.animate(toolbar_submit).translationYBy(Handler_System.dip2px(150)).setDuration(500).start();
+        }
     }
 
     /**
@@ -497,7 +512,12 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     private void bottomShowAnimation() {
         userInfoShow = true;
-        AnimationUtils.showHideAnimation(rl_bottom_view, userInfoShow, rl_bottom_bar.getHeight() - ll_bottom_content.getHeight());
+        if(footer_layout_context!=null) {
+            ViewPropertyAnimator.animate(footer_layout_context).translationYBy(Handler_System.dip2px(50)).setDuration(500).start();
+            //在拉伸底部菜单时 ，底部工具栏按钮升高
+//            ViewPropertyAnimator.animate(toolbar_submit).translationYBy(-Handler_System.dip2px(150)).setDuration(500).start();
+        }
+        AnimationUtils.showHideAnimation(rl_bottom_view, userInfoShow, rl_bottom_bar.getHeight()-Handler_System.dip2px(4) - ll_bottom_content.getHeight(),ll_btn_view);
 
     }
 

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:orientation="vertical">
 
     <RelativeLayout
@@ -11,36 +12,41 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/ll_bottom_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="360dp"
             android:layout_alignParentBottom="true"
             android:background="@color/colorPrimary">
 
-            <TextView
+            <include
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="asdasdasdasdasd玩gals发生 阿斯顿阿隆索" />
+                android:id="@+id/footer_layout_context"
+                layout="@layout/footer_layout_context"
+              />
+            <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:gravity="center"-->
+            <!--android:text="asdasdasdasdasd玩gals发生 阿斯顿阿隆索" />-->
         </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/rl_bottom_bar"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginBottom="-50dp"
             android:layout_above="@+id/ll_bottom_content"
-            android:layout_centerHorizontal="true">
-
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="-55dp">
 
 
             <LinearLayout
                 android:id="@+id/ll_btn_view"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-
                 android:layout_centerHorizontal="true"
-
                 android:background="@drawable/selector_btn_shape1"
                 android:gravity="center">
 
@@ -53,7 +59,6 @@
                     android:text="用户" />
             </LinearLayout>
         </RelativeLayout>
-
 
 
     </RelativeLayout>
