@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#e33f51b5</color>
+    <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimary1">#5363bb</color>
     <color name="colorPrimaryDark">#303f9f</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ff4081</color>
     <color name="white">#ffffff</color>
-    <color name="half_full">#003f51b5</color>
+    <color name="half_full">#3f51b5</color>
     <color name="btn_shape1">#a4a1a1</color>
     <color name="btn_shape2">#847678</color>
-    <color name="half_brown">#26000000</color>
+    <color name="half_brown">#000000</color>
     <!-- 100%全透明 -->
     <!-- 25%全透明 -->
-    <color name="half_white_25">#3fffffff</color>
-    <color name="half_white_75">#bfffffff</color>
+    <color name="half_white_25">#ffffff</color>
+    <color name="half_white_75">#ffffff</color>
     <!-- title背景色 咖色  80% b不透明-->
     <color name="title_bg_80">#c7c7c7</color>
     <color name="yellow">#d7d37e</color>

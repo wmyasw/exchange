@@ -27,55 +27,54 @@
             android:gravity="top|center|bottom"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/ll_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
+            <LinearLayout
+                android:id="@+id/ll_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center_horizontal"
-                android:text="横向滚动查看更多筛选条件"
-                android:textColor="@color/white" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="1dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="横向滚动查看更多筛选条件"
+                    android:textColor="@color/white" />
 
-                    <TableLayout
-                        android:id="@+id/important_tag"
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="1dp"
+                        android:orientation="horizontal">
 
-                        android:layout_height="match_parent">
+                        <TableLayout
+                            android:id="@+id/important_tag"
+                            android:layout_width="match_parent"
 
-                    </TableLayout>
+                            android:layout_height="match_parent">
 
-                    <TableLayout
-                        android:id="@+id/tbl_tag"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></TableLayout>
-                </LinearLayout>
-            </HorizontalScrollView>
+                        </TableLayout>
+
+                        <TableLayout
+                            android:id="@+id/tbl_tag"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></TableLayout>
+                    </LinearLayout>
+                </HorizontalScrollView>
 
 
-            <com.jdjt.exchange.view.FlowLayout
-                android:id="@+id/gl_tags"
-                android:layout_width="match_parent"
-
-                android:layout_height="wrap_content"
-                android:animateLayoutChanges="true">
-
-            </com.jdjt.exchange.view.FlowLayout>
+                <com.jdjt.exchange.view.FlowLayout
+                    android:id="@+id/gl_tags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true">
+                </com.jdjt.exchange.view.FlowLayout>
+            </LinearLayout>
         </LinearLayout>
-</LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -199,8 +198,8 @@
                     android:inputType="textMultiLine"
                     android:paddingLeft="40dp"
                     android:paddingRight="40dp"
-                     android:textAppearance="?android:attr/textAppearanceLargeInverse"
-                    android:textSize="14sp" />
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:selectAllOnFocus="false" />
 
                 <TextView
                     android:id="@+id/text_find_btn"

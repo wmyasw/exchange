@@ -29,9 +29,11 @@ public class SearchActivity extends BaseActivity {
         super.initPageView();
         listView= (ListView) findViewById(R.id.listView);
         adapter=new FooterListAdapter(this);
+        listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_DISABLED);
         listView.setAdapter(adapter);
         initData();
         adapter.setDataSource(list);
+
     }
     private void initData(){
         list=new ArrayList<>();

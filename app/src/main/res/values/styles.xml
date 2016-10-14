@@ -61,21 +61,21 @@
     </style>
 
 
-    <!--Material 进入动画效果-->
-    <style name="myTheme" parent="android:Theme.Material">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <!-- 允许使用transitions -->
-        <item name="android:windowContentTransitions">true</item>
+    <!--&lt;!&ndash;Material 进入动画效果&ndash;&gt;-->
+    <!--<style name="myTheme" parent="android:Theme.Material">-->
+        <!--<item name="windowActionBar">false</item>-->
+        <!--<item name="windowNoTitle">true</item>-->
+        <!--&lt;!&ndash; 允许使用transitions &ndash;&gt;-->
+        <!--<item name="android:windowContentTransitions">true</item>-->
 
-        <!-- 指定进入和退出transitions -->
-        <item name="android:windowEnterTransition">@transition/explode</item>
-        <item name="android:windowExitTransition">@transition/explode</item>
+        <!--&lt;!&ndash; 指定进入和退出transitions &ndash;&gt;-->
+        <!--<item name="android:windowEnterTransition">@transition/explode</item>-->
+        <!--<item name="android:windowExitTransition">@transition/explode</item>-->
 
-        <!-- 指定shared element transitions -->
-        <item name="android:windowSharedElementEnterTransition">
-            @transition/change_image_transform</item>
-        <item name="android:windowSharedElementExitTransition">
-            @transition/change_image_transform</item>
-    </style>
+        <!--&lt;!&ndash; 指定shared element transitions &ndash;&gt;-->
+        <!--<item name="android:windowSharedElementEnterTransition">-->
+            <!--@transition/change_image_transform</item>-->
+        <!--<item name="android:windowSharedElementExitTransition">-->
+            <!--@transition/change_image_transform</item>-->
+    <!--</style>-->
 </resources>

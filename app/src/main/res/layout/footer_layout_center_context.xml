@@ -26,14 +26,18 @@
         android:text="全部清除"
         android:textColor="@color/colorAccent" />
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/toolbar_submit"
-        android:layout_below="@+id/textView8"
-        android:divider="#00000000"
-        android:dividerHeight="4dp" />
+
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"       android:layout_above="@+id/toolbar_submit"
+            android:divider="#00000000"
+            android:fastScrollEnabled="false"
+            android:dividerHeight="4dp"
+            android:translationZ="0dp"
+            android:transcriptMode="disabled"
+            android:layout_below="@+id/textView8" />
 
 
     <LinearLayout

@@ -2,6 +2,7 @@ package com.jdjt.exchange.activity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -37,6 +38,7 @@ import com.jdjt.exchange.R;
 import com.jdjt.exchange.adapter.TagsAdapter;
 import com.jdjt.exchange.model.TagDao;
 import com.jdjt.exchange.util.AnimationUtils;
+import com.jdjt.exchange.util.SoftKeyboardUtil;
 import com.jdjt.exchange.view.FlowLayout;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ArgbEvaluator;
@@ -66,9 +68,16 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (initPageLayoutID() != 0)
             setContentView(initPageLayoutID());//初始化页面
         context = this;
+        SoftKeyboardUtil.observeSoftKeyboard(this, new SoftKeyboardUtil.OnSoftKeyboardChangeListener() {
+            @Override
+            public void onSoftKeyBoardChange(int softKeybardHeight, boolean visible) {
+
+            }
+        });
         init(savedInstanceState);
     }
 
@@ -121,6 +130,35 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     protected TableLayout important_tag; //重要标签组 布局
     DbUtils db;
     TagDao tagDao;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        rl_bottom_view =null;
+        rl_bottom_bar =null;
+        ll_btn_view =null;
+        toolbar_submit =null;
+        footer_layout_context =null;
+        tag0  =null;
+        tag1 =null;
+        tag2  =null;
+        tag3  =null;
+        important_tag =null;
+        rl_top_view  =null;
+        rl_top_bar =null;
+        ll_search_view  =null;
+        find_view  =null;
+        ll_top_content =null;
+        imageView2  =null;
+        text_find_btn =null;
+        editText =null;
+
+        ll_search =null;
+
+        ll_content =null;
+        Ioc.getIoc().getLogger().i("1222222222222222222222222222");
+    }
+
     /**
      * 初始化页面控件
      */
@@ -135,7 +173,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         ViewTreeObserver();
 
     }
-    LinearLayout footer_layout_context,toolbar_submit;
+    LinearLayout toolbar_submit,footer_layout_context;
     /**
      * 底部菜单布局声明
      */
@@ -228,14 +266,10 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 //                            ll_bottom_content.clearAnimation();
                         }
                         topShowAnimation();
-                        ll_content.setVisibility(View.VISIBLE);
-                        editText.requestFocus();
+//                        ll_content.setVisibility(View.VISIBLE);
                     } else {
-                        ll_content.setVisibility(View.GONE);
-
-
+//                        ll_content.setVisibility(View.GONE);
                         topHidAnimation();
-                        editText.clearFocus();
                     }
                 }
             });
@@ -251,11 +285,14 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         ll_btn_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                if (getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
+                    // 因为 在软键盘弹出后 会重新处理布局文件后会影响当前设置，所以在这里就直接 返回，不做布局调整
+                    return;
+                }
                 userInfoShow = false;
-
                 bottomlayoutParams.height = screenHeight / 5 * 3;
                 //初始化 标签位置
-                ViewHelper.setTranslationY(rl_bottom_view, ll_bottom_content.getHeight() - rl_bottom_bar.getHeight()+Handler_System.dip2px(4) );
+                ViewHelper.setTranslationY(rl_bottom_view, ll_bottom_content.getHeight() - rl_bottom_bar.getHeight()-Handler_System.dip2px(4) );
                 //初始化 标签位置
 //                ViewHelper.setTranslationY(toolbar_submit, toolbar_submit.getHeight());
             }
@@ -265,11 +302,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             ll_top_content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    //判断隐藏软键盘是否弹出
                     if (getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
                         // 因为 在软键盘弹出后 会重新处理布局文件后会影响当前设置，所以在这里就直接 返回，不做布局调整
-                        Toast.makeText(getApplicationContext(), "默认Toast样式",
-                                Toast.LENGTH_SHORT).show();
                         return;
                     }
                     isShowFindBtn = false;
@@ -500,7 +534,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      */
     private void bottomHidAnimation() {
         userInfoShow = false;
-        AnimationUtils.showHideAnimation(rl_bottom_view, userInfoShow, ll_bottom_content.getHeight() - rl_bottom_bar.getHeight()+Handler_System.dip2px(4),ll_btn_view);
+        AnimationUtils.showHideAnimation(rl_bottom_view, userInfoShow, ll_bottom_content.getHeight() - rl_bottom_bar.getHeight()-Handler_System.dip2px(4),ll_btn_view);
         if(footer_layout_context!=null) {
             ViewPropertyAnimator.animate(footer_layout_context).translationYBy(-Handler_System.dip2px(50)).setDuration(500).start();
 //            ViewPropertyAnimator.animate(toolbar_submit).translationYBy(Handler_System.dip2px(150)).setDuration(500).start();
@@ -517,7 +551,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             //在拉伸底部菜单时 ，底部工具栏按钮升高
 //            ViewPropertyAnimator.animate(toolbar_submit).translationYBy(-Handler_System.dip2px(150)).setDuration(500).start();
         }
-        AnimationUtils.showHideAnimation(rl_bottom_view, userInfoShow, rl_bottom_bar.getHeight()-Handler_System.dip2px(4) - ll_bottom_content.getHeight(),ll_btn_view);
+        AnimationUtils.showHideAnimation(rl_bottom_view, userInfoShow, rl_bottom_bar.getHeight()+Handler_System.dip2px(4) - ll_bottom_content.getHeight(),ll_btn_view);
 
     }
 
@@ -537,7 +571,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         db = DbUtils.create(config);//db还有其他的一些构造方法，比如含有更新表版本的监听器的
         tagDao = new TagDao();
         tagDao.setId(0);
-//        tagDao = db.findById(TagDao.class, tagDao.getId());
+        tagDao = db.findById(TagDao.class, tagDao.getId());
     }
 
 
