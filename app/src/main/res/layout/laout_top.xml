@@ -4,7 +4,6 @@
     android:id="@+id/layout_top"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutMode="clipBounds"
     tools:showIn="@layout/activity_search">
 
 
@@ -50,13 +49,10 @@
                         android:layout_height="match_parent"
                         android:layout_margin="1dp"
                         android:orientation="horizontal">
-
                         <TableLayout
                             android:id="@+id/important_tag"
                             android:layout_width="match_parent"
-
                             android:layout_height="match_parent">
-
                         </TableLayout>
 
                         <TableLayout
@@ -71,8 +67,7 @@
                     android:id="@+id/gl_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true">
-                </com.jdjt.exchange.view.FlowLayout>
+                    android:animateLayoutChanges="true"></com.jdjt.exchange.view.FlowLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -198,8 +193,8 @@
                     android:inputType="textMultiLine"
                     android:paddingLeft="40dp"
                     android:paddingRight="40dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:selectAllOnFocus="false" />
+                    android:selectAllOnFocus="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat" />
 
                 <TextView
                     android:id="@+id/text_find_btn"

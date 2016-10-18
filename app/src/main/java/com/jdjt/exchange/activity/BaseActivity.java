@@ -577,22 +577,27 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     public void onClick(View v) {
 
+        if(tagDao==null) {
+            tagDao = new TagDao();
+            tagDao.setId(0);
+            tagDao = db.findById(TagDao.class, tagDao.getId());
+        }
         switch (Integer.valueOf(v.getTag(R.id.colCode) + "")) {
             case 0:
                 tag0.setText(((TextView) v).getText() + "");
-                tagDao.setTag0(((TextView) v).getText() + "");
+//                tagDao.setTag0(((TextView) v).getText() + "");
                 break;
             case 1:
                 tag1.setText(((TextView) v).getText() + "");
-                tagDao.setTag1(((TextView) v).getText() + "");
+//                tagDao.setTag1(((TextView) v).getText() + "");
                 break;
             case 2:
                 tag2.setText(((TextView) v).getText() + "");
-                tagDao.setTag2(((TextView) v).getText() + "");
+//                tagDao.setTag2(((TextView) v).getText() + "");
                 break;
             case 3:
                 tag3.setText(((TextView) v).getText() + "");
-                tagDao.setTag3(((TextView) v).getText() + "");
+//                tagDao.setTag3(((TextView) v).getText() + "");
                 break;
             default:
 
@@ -622,7 +627,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                 }
                 break;
         }
-        tagDao.setTags(tagData);
+//        tagDao.setTags(tagData);
 //        db.saveOrUpdate(tagDao);
 
     }
